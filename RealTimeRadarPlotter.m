@@ -15,7 +15,6 @@ while true
     write(u,hello,"string","192.168.2.237",16000);
     
         while etime(clock, t0) < 7
-            wait(0.1)
             data = dec2hex(read(u,1,"uint8"));
                 if data == char("2")
                     data = dec2hex(read(u,1,"uint8"));
@@ -23,7 +22,6 @@ while true
                         data = dec2hex(read(u,1,"uint8"));
                     end
                         if data == char("FD")
-                            disp("cabecera detectada")
                             data = read(u,data_length,"uint8");
                             data=data(10:512);
                             plot(x_axis,data)
