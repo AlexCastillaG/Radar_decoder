@@ -8,14 +8,14 @@ u = udpport("IPV4",Timeout=1);
 hello= "CCC";
 x_axis=linspace(1,fft_length,fft_length);
 figure(1)
-
+total_mean = []
 while true
     t0 = clock;
     write(u,hello,"string","192.168.2.237",16000);
     
         while etime(clock, t0) < 7
             data_mean=[];
-            while size(data_mean,1) < 2
+            while size(data_mean,1) < 10
                 data = dec2hex(read(u,1,"uint8"));
                 if data == char("2")
                     data = dec2hex(read(u,1,"uint8"));
@@ -26,13 +26,16 @@ while true
                             data = read(u,data_length,"uint8");
                             data=data(10:512);
                             data_mean=[data_mean;data];
+                            flush(u,"input")
 
                         end
                 end
 
             end
             
-            data_mean=mean(data_mean)
+            data_mean=mean(data_mean);
+            pause(0.5)
+            total_mean=[total_mean;data_mean]
             plot(x_axis,data_mean)
             axis([ 10, fft_length, 0 , 128 ]);
             drawnow;
